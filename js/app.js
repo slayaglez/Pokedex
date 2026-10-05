@@ -24,19 +24,32 @@ const obtenerPokemon = async (busqueda) => {
 };
 
 formulario.addEventListener("submit", async (evento) => {
-    evento.preventDefault();
+  evento.preventDefault();
 
-    const busqueda = inputBusqueda.value.trim().toLowerCase();
+  const busqueda = inputBusqueda.value.trim().toLowerCase();
 
-    if (!busqueda) {
-        mensaje.textContent = "Introduce un nombre o número.";
-        resultado.innerHTML = "";
-        return;
-    }
+  if (!busqueda) {
+    mensaje.textContent = "Introduce un nombre o número.";
+    resultado.innerHTML = "";
+    return;
+  }
 
+  mensaje.textContent = "Cargando...";
+  resultado.innerHTML = "";
+
+  try {
     const pokemon = await obtenerPokemon(busqueda);
+
     mostrarPokemon(pokemon);
+    mensaje.textContent = "";
+  } catch (error) {
+    mensaje.textContent = error.message;
+  }
 });
+
+const formatearId = (id) => {
+  return String(id).padStart(3, "0");
+};
 
 const mostrarPokemon = (pokemon) => {
   const tiposHTML = pokemon.tipos
@@ -45,7 +58,7 @@ const mostrarPokemon = (pokemon) => {
 
   resultado.innerHTML = `
     <article class="pokemon">
-      <p class="pokemon__numero">N.º ${pokemon.id}</p>
+      <p class="pokemon__numero">N.º ${formatearId(pokemon.id)}</p>
 
       <img
         class="pokemon__imagen"
