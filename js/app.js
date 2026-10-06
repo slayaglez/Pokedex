@@ -1,61 +1,77 @@
+// ===== Referencias al DOM =====
 const formulario = document.querySelector("#formulario-busqueda");
 const inputBusqueda = document.querySelector("#busqueda");
-const mensaje = document.querySelector("#mensaje");
-const resultado = document.querySelector("#resultado");
+const mensaje = document.querySelector("#mensaje");     // estados: error / cargando
+const resultado = document.querySelector("#resultado"); // donde se pinta la tarjeta
 
+
+// ===== API: pide el Pokémon y devuelve solo lo que usamos =====
 const obtenerPokemon = async (busqueda) => {
-    const url = `https://pokeapi.co/api/v2/pokemon/${busqueda}`;
-    const respuesta = await fetch(url);
+  const url = `https://pokeapi.co/api/v2/pokemon/${busqueda}`;
+  const respuesta = await fetch(url);
 
-    if (!respuesta.ok) {
-        throw new Error("Pokémon no encontrado.");
-    }
+  // 404 u otro fallo --> salta al catch del submit
+  if (!respuesta.ok) {
+    throw new Error("Pokémon no encontrado.");
+  }
 
-    const datos = await respuesta.json();
+  const datos = await respuesta.json();
 
-    return {
-        id: datos.id,
-        nombre: datos.name,
-        imagen: datos.sprites.front_default,
-        altura: datos.height,
-        peso: datos.weight,
-        tipos: datos.types.map(({ type }) => type.name),
-    };
+  // Aplanamos la respuesta de la API a un objeto propio
+  return {
+    id: datos.id,
+    nombre: datos.name,
+    imagen: datos.sprites.front_default,
+    altura: datos.height,  // en decimetros
+    peso: datos.weight,    // en hectogramos
+    tipos: datos.types.map(({ type }) => type.name), // ["fuego", "volador"]
+  };
 };
 
+
+// ===== Flujo principal: envío del formulario =====
 formulario.addEventListener("submit", async (evento) => {
-  evento.preventDefault();
+  evento.preventDefault(); // evita recargar la página
 
   const busqueda = inputBusqueda.value.trim().toLowerCase();
 
+  // Validación: input vacío
   if (!busqueda) {
     mensaje.textContent = "Introduce un nombre o número.";
     resultado.innerHTML = "";
     return;
   }
 
+  // Estado de carga
   mensaje.textContent = "Cargando...";
   resultado.innerHTML = "";
 
   try {
     const pokemon = await obtenerPokemon(busqueda);
-
+    inputBusqueda.value = "";
     mostrarPokemon(pokemon);
     mensaje.textContent = "";
   } catch (error) {
-    mensaje.textContent = error.message;
+    mensaje.textContent = error.message; // el throw de obtenerPokemon o fallo de red
   }
 });
 
+
+// ===== Helpers de presentación =====
+
+// 7 → "007"
 const formatearId = (id) => {
   return String(id).padStart(3, "0");
 };
 
+// Pinta la tarjeta del Pokémon en #resultado
 const mostrarPokemon = (pokemon) => {
+  // Array de tipos → string de <span>s
   const tiposHTML = pokemon.tipos
     .map((tipo) => `<span class="tipo">${tipo}</span>`)
     .join("");
 
+  // /10 para pasar dm → m y hg → kg
   resultado.innerHTML = `
     <article class="pokemon">
       <p class="pokemon__numero">N.º ${formatearId(pokemon.id)}</p>
