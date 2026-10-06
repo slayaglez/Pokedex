@@ -3,6 +3,7 @@ const formulario = document.querySelector("#formulario-busqueda");
 const inputBusqueda = document.querySelector("#busqueda");
 const mensaje = document.querySelector("#mensaje");     // estados: error / cargando
 const resultado = document.querySelector("#resultado"); // donde se pinta la tarjeta
+const botonBuscar = formulario.querySelector("button");
 
 
 // ===== API: pide el Pokémon y devuelve solo lo que usamos =====
@@ -21,7 +22,8 @@ const obtenerPokemon = async (busqueda) => {
   return {
     id: datos.id,
     nombre: datos.name,
-    imagen: datos.sprites.front_default,
+    //imagen: datos.sprites.front_default,
+    imagen: datos.sprites.front_shiny,
     altura: datos.height,  // en decimetros
     peso: datos.weight,    // en hectogramos
     tipos: datos.types.map(({ type }) => type.name), // ["fuego", "volador"]
@@ -43,17 +45,24 @@ formulario.addEventListener("submit", async (evento) => {
   }
 
   // Estado de carga
+  botonBuscar.disabled = true;
   mensaje.textContent = "Cargando...";
   resultado.innerHTML = "";
 
   try {
     const pokemon = await obtenerPokemon(busqueda);
+
+    // Limpiamos búsqueda y devolvemos foco
     inputBusqueda.value = "";
+    inputBusqueda.focus();
+
     mostrarPokemon(pokemon);
     mensaje.textContent = "";
   } catch (error) {
     mensaje.textContent = error.message; // el throw de obtenerPokemon o fallo de red
-  }
+  } finally {
+    botonBuscar.disabled = false;
+}
 });
 
 

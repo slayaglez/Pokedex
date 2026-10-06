@@ -90,4 +90,4 @@ Rellenar con 0 por la izquierda hasta los tres dígitos.
 
 - **¿Qué habría que modificar para mostrar varios Pokémon simultáneamente?**
 
-Se me ocurre editar la búsqueda para que con la misma que se trae un pokemon se los traiga a todos y seguir haciendo una sola llamada a la API.
+Se me ocurre editar la búsqueda para que con la misma que se trae un pokemon se los traiga a todos y seguir haciendo una sola llamada a la API. Edit: mirando la API te puedes traer todo con `https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0`
