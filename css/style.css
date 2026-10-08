@@ -1,147 +1,223 @@
-* {
+:root {
+  --gameboy-oscuro: #0f380f;
+  --gameboy-medio-oscuro: #306230;
+  --gameboy-medio-claro: #8bac0f;
+  --gameboy-claro: #9bbc0f;
+  --pantalla-verde: #c4cfa1;
+  --fuente-retro: "Courier New", Courier, monospace;
+}
+
+*, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  min-height: 100vh;
-  margin: 0;
+  font-family: var(--fuente-retro);
+  background-color: var(--gameboy-oscuro);
+  color: var(--gameboy-oscuro);
   padding: 2rem 1rem;
-  font-family: Arial, sans-serif;
-  color: #1f2937;
-  background: #f3f4f6;
+  display: flex;
+  justify-content: center;
 }
 
+/* Pantalla de juego */
 .contenedor {
-  width: min(100%, 650px);
-  margin: 0 auto;
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--pantalla-verde);
+  border: 4px solid var(--gameboy-oscuro);
+  box-shadow:
+          inset 0 0 0 4px var(--pantalla-verde),
+          inset 0 0 0 8px var(--gameboy-medio-oscuro);
+  padding: 2rem;
 }
 
 h1 {
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
   text-align: center;
-  color: #d10303;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  border-bottom: 4px double var(--gameboy-oscuro);
+  padding-bottom: 0.5rem;
 }
 
 .introduccion {
-  margin-bottom: 2rem;
-  text-align: center;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
 }
 
 .buscador {
-  padding: 1.5rem;
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 8px 25px rgb(0 0 0 / 10%);
+  margin-bottom: 1.5rem;
 }
 
 .buscador label {
   display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
   margin-bottom: 0.5rem;
   font-weight: bold;
 }
 
 .buscador__controles {
   display: flex;
+  flex-direction: column;
   gap: 0.75rem;
 }
 
-.buscador input {
-  flex: 1;
-  min-width: 0;
-  padding: 0.75rem;
-  border: 2px solid #d1d5db;
-  border-radius: 0.5rem;
-  font: inherit;
+.buscador input[type="text"] {
+  font-family: var(--fuente-retro);
+  font-size: 1rem;
+  padding: 0.5rem;
+  background-color: var(--gameboy-claro);
+  border: 3px solid var(--gameboy-oscuro);
+  color: var(--gameboy-oscuro);
+  outline: none;
+  text-transform: uppercase;
 }
 
-.buscador input:focus {
-  border-color: #e90000;
-  outline: 3px solid rgb(220 38 38 / 20%);
+.buscador input[type="text"]::placeholder {
+  color: var(--gameboy-medio-oscuro);
+  opacity: 0.7;
 }
 
-.buscador button {
-  padding: 0.75rem 1.25rem;
-  border: 0;
-  border-radius: 0.5rem;
-  color: white;
-  font: inherit;
+/* Botón interactivo 8-bits */
+.buscador button[type="submit"] {
+  font-family: var(--fuente-retro);
+  font-size: 1rem;
   font-weight: bold;
-  background: #ce0505;
-  cursor: pointer;
+  text-transform: uppercase;
+  padding: 0.75rem;
+  background-color: var(--gameboy-medio-oscuro);
+  color: var(--pantalla-verde);
+  border: 3px solid var(--gameboy-oscuro);
+  box-shadow: 0 4px 0 var(--gameboy-oscuro);
+  position: relative;
 }
 
-.buscador button:hover {
-  background: #ce0505;
+.buscador button[type="submit"]:active {
+  top: 4px;
+  box-shadow: 0 0 0 var(--gameboy-oscuro);
 }
 
+/* Mensajes con cursor parpadeante */
 .mensaje {
-  min-height: 1.5rem;
-  margin: 1.5rem 0;
-  text-align: center;
-  font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  min-height: 1.2rem;
 }
 
+.mensaje::after {
+  content: " _";
+  animation: parpadeo-cursor 0.8s infinite steps(2);
+}
+
+/* Área de resultados */
 .resultado {
-  display: flex;
-  justify-content: center;
-}
-
-.pokemon {
-  width: min(100%, 360px);
-  padding: 1.5rem;
-  text-align: center;
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 8px 25px rgb(0 0 0 / 10%);
-}
-
-.pokemon__imagen {
-  width: 180px;
-  height: 180px;
-  image-rendering: pixelated;
-}
-
-.pokemon__nombre {
-  margin: 0.5rem 0;
-  text-transform: capitalize;
-}
-
-.pokemon__numero {
-  color: #6b7280;
-  font-weight: bold;
-}
-
-.pokemon__datos {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 1rem;
-  margin: 1.5rem 0;
+  margin-top: 1rem;
 }
 
-.pokemon__datos p {
-  margin: 0;
-  padding: 0.75rem;
-  background: #f3f4f6;
-  border-radius: 0.5rem;
+/* Tarjetas inyectadas por JS */
+.resultado__tarjeta {
+  background-color: var(--gameboy-claro);
+  border: 3px dashed var(--gameboy-oscuro);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* TARJETA DE JS */
+/* Tarjeta principal del Pokémon */
+.pokemon {
+  background-color: var(--gameboy-claro);
+  border: 3px solid var(--gameboy-oscuro);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Número de índice */
+.pokemon__numero {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--gameboy-medio-oscuro);
+  align-self: flex-start;
+  text-transform: uppercase;
+}
+
+/* Imagen/Sprite principal */
+.pokemon__imagen {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  background-color: var(--pantalla-verde);
+  border: 3px solid var(--gameboy-oscuro);
+  padding: 0.5rem;
+}
+
+/* Nombre del Pokémon */
+.pokemon__nombre {
+  font-size: 1.4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  border-bottom: 4px double var(--gameboy-oscuro);
+  padding-bottom: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+/* Contenedor de Altura y Peso */
+.pokemon__datos {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  text-align: center;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  border-bottom: 1px dashed var(--gameboy-medio-oscuro);
+  padding-bottom: 0.75rem;
+}
+
+.pokemon__datos strong {
+  color: var(--gameboy-medio-oscuro);
+  font-size: 0.75rem;
+}
+
+/* Contenedor de etiquetas de tipo */
 .pokemon__tipos {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem;
+  width: 100%;
 }
 
-.tipo {
-  padding: 0.4rem 0.8rem;
-  color: white;
-  text-transform: capitalize;
-  background: #4b5563;
-  border-radius: 999px;
+/* Estilo para las etiquetas inyectadas dentro de ${tiposHTML} */
+/* Nota: Ajusta la clase si tu JS genera un nombre diferente para las etiquetas */
+.pokemon__tipos span,
+.pokemon__tipo {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border: 2px solid var(--gameboy-oscuro);
+  background-color: var(--pantalla-verde);
 }
 
-@media (max-width: 480px) {
-  .buscador__controles {
-    flex-direction: column;
-  }
+
+
+@keyframes parpadeo-cursor {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
 }
