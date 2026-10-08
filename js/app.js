@@ -13,7 +13,7 @@ const obtenerPokemon = async (busqueda) => {
 
   // 404 u otro fallo --> salta al catch del submit
   if (!respuesta.ok) {
-    throw new Error("Pokémon no encontrado.");
+    throw new Error("Pokémon no encontrado");
   }
 
   const datos = await respuesta.json();
@@ -22,8 +22,8 @@ const obtenerPokemon = async (busqueda) => {
   return {
     id: datos.id,
     nombre: datos.name,
-    //imagen: datos.sprites.front_default,
-    imagen: datos.sprites.front_shiny,
+    imagen: datos.sprites.front_default,
+    //imagen: datos.sprites.front_shiny,
     altura: datos.height,  // en decimetros
     peso: datos.weight,    // en hectogramos
     tipos: datos.types.map(({ type }) => type.name), // ["fuego", "volador"]
@@ -39,7 +39,7 @@ formulario.addEventListener("submit", async (evento) => {
 
   // Validación: input vacío
   if (!busqueda) {
-    mensaje.textContent = "Introduce un nombre o número.";
+    mensaje.textContent = "Introduce un nombre o número";
     resultado.innerHTML = "";
     return;
   }
