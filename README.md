@@ -40,8 +40,10 @@ La información que recibe se filtra y se dispone en pantalla con HTML y CSS en 
 Cuenta con manejo de errores como mensajes específicos para cuando el pokemon no existe o mensajes de "cargando" mientras se espera la respuesta de la API (también se bloquea el botón de Buscar hasta recibir la respuesta).
 
 ### Check-Point!
-Enlace al commit hasta el momento:
-![Aquí]()
+Click en el checkpoint para el enlace al commit hasta el momento:
+
+<a href="https://github.com/slayaglez/Pokedex/commit/4ee8bfbbe5a2972640afbce027bb45806157af1e"><img src="assets/img/checkpoint.png"></a>
+
 
 ## ANEXO
 ### **Preguntas respondidas durante el seguimiento de la práctica Mini-Pokedex.**
