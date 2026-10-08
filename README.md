@@ -1,8 +1,50 @@
 # Pokedex
 Una Pokedex, nacida de un proyecto para la asignatura PGL de 1º DAM.
 
-## Primera parte
-### **Preguntas respondidas durante el seguimiento de la práctica.**
+## 1. Punto de partida
+Empezamos con el proyecto "Mini-pokedex" como base, un programa en JS que se conecta a una API para traer y tratar información básica del mundo Pokemon. Esta información se representa en navegador con HTML y CSS.
+
+El árbol hasta ahora tiene la siguiente pinta:
+```bash
+.
+├── assets
+│   ├── img
+│   └── sound
+├── css
+│   └── style.css
+├── index.html
+├── js
+│   └── app.js
+└── README.md
+
+6 directories, 4 files
+```
+
+<br>
+
+Aquí hay un ejemplo de su funcionamiento, tras buscar el número 77 este es el resultado. (Shinny porque se pedía una modificación de la mini-Pokedex y la dejé así).
+
+![img](assets/img/cap1.png)
+
+<br>
+
+Aquí por otro lado tenemos un ejemplo de un error controlado cuando el pokemon que se inserta no existe.
+
+![img](assets/img/cap2.png)
+
+### Funcionalidades
+Hasta ahora la mini-Pokedex hace una única llamada a la API y recibe la información de un solo Pokémon, el que se especifique en el buscador ya sea por nombre o por número.
+
+La información que recibe se filtra y se dispone en pantalla con HTML y CSS en la tarjeta que se ve en la imagen.
+
+Cuenta con manejo de errores como mensajes específicos para cuando el pokemon no existe o mensajes de "cargando" mientras se espera la respuesta de la API (también se bloquea el botón de Buscar hasta recibir la respuesta).
+
+### Check-Point!
+Enlace al commit hasta el momento:
+![Aquí]()
+
+## ANEXO
+### **Preguntas respondidas durante el seguimiento de la práctica Mini-Pokedex.**
 
 - **¿Por qué escuchamos el evento submit del formulario?**
 
