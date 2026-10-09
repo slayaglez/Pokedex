@@ -240,9 +240,45 @@ Después de debugguear muchísimo, pero muchísimo (errores como que estaba acce
 Facilito
 
 ### Checkpoint!
-<a href="futurolink"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+<a href="https://github.com/slayaglez/Pokedex/commit/0933e94b6cfda5addf471a73ad2bdd18ff75abce"><img src="assets/img/checkpoint.png" style="height:100px"></a>
 
 <hr>
+
+## 4. Creamos la clase y sus modificaciones
+
+Bueno, se me pide que cree una clase Pokemon.js y creo que a estas alturas justo es el momento de hacerlo.
+
+Listo, creí que sería super difícil pero flipando con lo parecido que es a Java, tras tantas noches pensando en Joatham crear una clase en Java me toma de 1 a 2 minutos.
+
+Me vine arriba y también creé dos métodos para que devuelvan la altura en metros y el peso en kilos porque eso de hectómetros y megagramos me parece de friki que flipas.
+
+```javascript
+alturaEnMetros() {
+    return this.altura / 10;
+}
+
+pesoEnKilos() {
+    return this.peso / 10;
+}
+```
+
+### Sprites
+
+Los sprites deben estar dados la vuelta hasta que pasas el cursor por encima, pero como no me gusta la idea de que todos me den la espalda, lo voy a hacer al revés, se darán la vuelta cuando los vayas a seleccionar, así como tímiditos jajajaja.
+
+Ya hice el CSS pensando en este momento porque estoy en todo así que es solo JS de nuevo, solo tuve que editar el `crearTarjeta()` para que tuviera dos imágenes y se enseñe una y oculte la otra según el cursor.
+
+**Mientras probaba descubrí que Exeggcute tiene un integrante super marginado, adjunto captura:**
+
+![img](assets/img/frontPokemon.png)
+![img](assets/img/backPokemon.png)
+pobrecito
+
+bueno
+
+### Checkpoint!
+<a href="futurolink"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+
 
 ## ANEXO
 ### **Preguntas respondidas durante el seguimiento de la práctica Mini-Pokedex.**

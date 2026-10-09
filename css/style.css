@@ -180,6 +180,19 @@ h1 {
   padding: 0.5rem;
 }
 
+/* Cambio de sprite: de frente por defecto, de espaldas con el cursor encima */
+.pokemon__imagen--espalda {
+  display: none;
+}
+
+.pokemon:hover .pokemon__imagen--espalda {
+  display: block;
+}
+
+.pokemon:hover .pokemon__imagen--frente {
+  display: none;
+}
+
 /* Nombre del Pokémon */
 .pokemon__nombre {
   font-size: 1.4rem;

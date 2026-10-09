@@ -16,22 +16,13 @@ const obtenerPokemon = async (busqueda) => {
 
   // 404 u otro fallo --> salta al catch del submit
   if (!respuesta.ok) {
-    throw new Error("No se pudo encontrar lo que buscábamos. Intenta de nuevo más tarde");
+    throw new Error("No se encontró ningún Pokémon.");
   }
 
   const datos = await respuesta.json();
 
   // Aplanamos la respuesta de la API a un objeto propio
-  return {
-    id: datos.id,
-    nombre: datos.name,
-    imagen: datos.sprites.front_default,
-    imagenEspalda: datos.sprites.back_default,
-    //imagen: datos.sprites.front_shiny,
-    altura: datos.height,  // en decimetros
-    peso: datos.weight,    // en hectogramos
-    tipos: datos.types.map(({ type }) => type.name), // ["fuego", "volador"]
-  };
+  return new Pokemon(datos);
 };
 
 
@@ -94,16 +85,22 @@ function crearTarjeta(pokemon) {
       <p class="pokemon__numero">N.º ${formatearId(pokemon.id)}</p>
 
       <img
-        class="pokemon__imagen"
+        class="pokemon__imagen pokemon__imagen--frente"
         src="${pokemon.imagen}"
-        alt="Imagen de ${pokemon.nombre}"
+        alt="Imagen de ${pokemon.nombre} de frente"
+      >
+      
+      <img
+        class="pokemon__imagen pokemon__imagen--espalda"
+        src="${pokemon.imagenEspalda}"
+        alt="Imagen de ${pokemon.nombre} de espaldas todo tímido"
       >
 
       <h2 class="pokemon__nombre">${pokemon.nombre}</h2>
 
       <div class="pokemon__datos">
-        <p><strong>Altura</strong><br>${pokemon.altura / 10} m</p>
-        <p><strong>Peso</strong><br>${pokemon.peso / 10} kg</p>
+        <p><strong>Altura</strong><br>${pokemon.alturaEnMetros()} m</p>
+        <p><strong>Peso</strong><br>${pokemon.pesoEnKilos()} kg</p>
       </div>
 
       <div class="pokemon__tipos">
