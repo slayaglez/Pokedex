@@ -348,7 +348,7 @@ botonAleatorio.addEventListener("click", async (evento) => {
     console.error(error);
     mensaje.textContent = "No se pudieron cargar los Pokémon. Pulsa el botón para reintentarlo.";
   } finally {
-    botonCargar.disabled = false;
+    botonAleatorio.disabled = false;
   }
 });
 
