@@ -277,8 +277,26 @@ pobrecito
 bueno
 
 ### Checkpoint!
+<a href="https://github.com/slayaglez/Pokedex/commit/0123a1e1ef1b45b05b02d8a6a0ea17f6b6738e50"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+
+<hr>
+
+## 5. Puliendo el proyecto
+
+Ahora si que me vine arriba, la verdad es que no entendí bien el enunciado y creí que había que añadir la predicción de búsqueda paralelamente al buscador. En fin fue lo que hice.
+
+Una vez hayas invocado a los pokemon se hará una predicción de qué pokemon buscas, cuando solo pueda ser uno se pondrá en grande.
+
+Me tomó más de 3 funciones y un event listener pero creo que mereció la pena. Este es un ejemplo:
+
+![img](assets/img/predict.png)
+
+El código básicamente escucha el input del buscador y por cada cambio filtra con un map el array de pokemon que ya teníamos, eso hace que nos ahorremos llamadas a la API pero que la prediccion solo funcione con los 151 pokemon guardados.
+
+### Checkpoint!
 <a href="futurolink"><img src="assets/img/checkpoint.png" style="height:100px"></a>
 
+<hr>
 
 ## ANEXO
 ### **Preguntas respondidas durante el seguimiento de la práctica Mini-Pokedex.**

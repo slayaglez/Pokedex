@@ -30,6 +30,12 @@ const obtenerPokemon = async (busqueda) => {
 formulario.addEventListener("submit", async (evento) => {
   evento.preventDefault(); // evita recargar la página
 
+  // Si ya tenemos los 151 filtramos sin llamar a la API
+  if (pokemons.length > 0) {
+    aplicarBusqueda();
+    return;
+  }
+
   const busqueda = inputBusqueda.value.trim().toLowerCase();
 
   // Validación: input vacío
@@ -131,6 +137,46 @@ function mostrarCuadricula(lista) {
   cuadricula.innerHTML = pokemonHTML;
 }
 
+// Devuelve los pokemon cargados que coinciden por nombre o por id
+function filtrarPokemons(texto) {
+  return pokemons.filter((pokemon) => {
+    return pokemon.nombre.includes(texto) || pokemon.id === Number(texto);
+  });
+}
+
+// Filtra la cuadricula con lo que haya escrito en el buscador
+function aplicarBusqueda() {
+  const busqueda = inputBusqueda.value.trim().toLowerCase();
+
+  resultado.innerHTML = "";
+  mensaje.textContent = "";
+
+  // Barra vacia: vuelven a salir todos
+  if (!busqueda) {
+    mostrarCuadricula(pokemons);
+    return;
+  }
+
+  const lista = filtrarPokemons(busqueda);
+  mostrarCuadricula(lista);
+
+  if (lista.length === 0) {
+    mensaje.textContent = "Ningún Pokémon coincide con la búsqueda";
+  }
+
+  // Si solo queda uno lo mostramos tambien en grande
+  if (lista.length === 1) {
+    mostrarPokemon(lista[0]);
+  }
+}
+
+// Filtra mientras se escribe, solo si ya se cargaron
+inputBusqueda.addEventListener("input", () => {
+  if (pokemons.length > 0) {
+    aplicarBusqueda();
+  }
+});
+
 // === Para cargar la cuadrícula ===
 botonCargar.addEventListener("click", async (evento) => {
 
@@ -141,6 +187,9 @@ botonCargar.addEventListener("click", async (evento) => {
   try {
     await cargarPokemons();
 
+    // Empezamos con el buscador limpio y los 151 a la vista
+    inputBusqueda.value = "";
+    resultado.innerHTML = "";
     mostrarCuadricula(pokemons);
     mensaje.textContent = "Listo!";
 
