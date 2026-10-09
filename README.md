@@ -148,9 +148,41 @@ Por poner algo.
 ### Pendiente
 El botón de cargar todavía no hace nada y la cuadrícula está vacía. Lo siguiente es el JS que pide los 151 Pokémon a la API y los pinta en `#cuadricula`.
 
-### Check-Point!
+### Checkpoint!
 
-<a href="estomereceundiez"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+<a href="https://github.com/slayaglez/Pokedex/commit/8468d67db4e4bc262301a77dd32c4011cb04fd2b"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+
+
+## 3. Un JavaScript salvaje ha aparecido
+### Preparación
+Primero se me ocurre dividir la función de mostrar pokemon en dos responsabilidades diferentes, si hago una que muestre el pokemon (para el pokemon que se busque) y otra para armar el html, podría usar esta última también en la cuadrícula.
+
+Es un cambio mínimo pero creo que será muy cómodo de aquí a dos párrafos.
+
+### Problema
+Tras leerme la documentación de la API no hay un método que me devuelva todos los pokemon a la vez (ridículo) así que tocará pedirlos de uno en uno, pensé en hacer un `for` con 151 `awaits` pero habría que estar loco para esperar por las 151, así que le pregunté a un amigo y me dijo que existe un método que involucra `Promise.all` que lanza las 151 peticiones a la vez. Espero no saturar nada ni a nadie con esto.
+
+### Solución
+Después de un ratillo he conseguido comprimir la función en esto:
+```javascript
+const cargarPokemons = async () => {
+  const promesas = [];
+
+  for (let i = 1; i <= 151; i++) {
+    promesas.push(obtenerPokemon(i));
+  }
+
+  pokemons = await Promise.all(promesas);
+};
+```
+
+Si te fijas, `obtenerPokemon(i)` no devuelve un pokemon sino una promesa, entonces guardo las 151 promesas en un array o en una lista, nidea de como van las listas en JavaScript, imagino que como en Python. 
+
+De esta forma no tenemos que esperar las 151 promesas una por una como un pringado, en su lugar esperamos por todas ellas como por tu ex.
+
+### Checkpoint!
+<a href="futurolink"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+
 
 
 ## ANEXO

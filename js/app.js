@@ -4,6 +4,8 @@ const inputBusqueda = document.querySelector("#busqueda");
 const mensaje = document.querySelector("#mensaje");     // estados: error / cargando
 const resultado = document.querySelector("#resultado"); // donde se pinta la tarjeta
 const botonBuscar = formulario.querySelector("button");
+const botonCargar = formulario.querySelector("#boton-cargar");
+const cuadricula = formulario.querySelector("#cuadricula");
 
 
 // ===== API: pide el Pokémon y devuelve solo lo que usamos =====
@@ -73,15 +75,19 @@ const formatearId = (id) => {
   return String(id).padStart(3, "0");
 };
 
-// Pinta la tarjeta del Pokémon en #resultado
+// Solo muestra la tarjeta
 const mostrarPokemon = (pokemon) => {
-  // Array de tipos → string de <span>s
-  const tiposHTML = pokemon.tipos
-    .map((tipo) => `<span class="pokemon__tipo">${tipo}</span>`)
-    .join("");
+  resultado.innerHTML = crearTarjeta(pokemon);
+};
 
-  // /10 para pasar dm → m y hg → kg
-  resultado.innerHTML = `
+// Devuelve solo la tarjeta html con la info ya ready
+function crearTarjeta(pokemon) {
+
+  const tiposHTML = pokemon.tipos
+      .map((tipo) => `<span class="pokemon__tipo">${tipo}</span>`)
+      .join("");
+
+  const stringHtml = `
     <article class="pokemon">
       <p class="pokemon__numero">N.º ${formatearId(pokemon.id)}</p>
 
@@ -103,4 +109,18 @@ const mostrarPokemon = (pokemon) => {
       </div>
     </article>
   `;
-};
+
+  return stringHtml;
+}
+
+
+const cargarPokemons = async () => {
+  const promesas = [];
+
+  for (let i = 1; i <= 151; i++) {
+    promesas.push(obtenerPokemon(i));
+  }
+
+  //return pokemones = await Promise.all(promesas);
+  pokemons = await Promise.all(promesas);
+}
