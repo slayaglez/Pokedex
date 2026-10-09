@@ -4,8 +4,9 @@ const inputBusqueda = document.querySelector("#busqueda");
 const mensaje = document.querySelector("#mensaje");     // estados: error / cargando
 const resultado = document.querySelector("#resultado"); // donde se pinta la tarjeta
 const botonBuscar = formulario.querySelector("button");
-const botonCargar = formulario.querySelector("#boton-cargar");
-const cuadricula = formulario.querySelector("#cuadricula");
+const botonCargar = document.querySelector("#boton-cargar");
+const cuadricula = document.querySelector("#cuadricula");
+let pokemons = [];
 
 
 // ===== API: pide el Pokémon y devuelve solo lo que usamos =====
@@ -15,7 +16,7 @@ const obtenerPokemon = async (busqueda) => {
 
   // 404 u otro fallo --> salta al catch del submit
   if (!respuesta.ok) {
-    throw new Error("Pokémon no encontrado");
+    throw new Error("No se pudo encontrar lo que buscábamos. Intenta de nuevo más tarde");
   }
 
   const datos = await respuesta.json();
@@ -25,6 +26,7 @@ const obtenerPokemon = async (busqueda) => {
     id: datos.id,
     nombre: datos.name,
     imagen: datos.sprites.front_default,
+    imagenEspalda: datos.sprites.back_default,
     //imagen: datos.sprites.front_shiny,
     altura: datos.height,  // en decimetros
     peso: datos.weight,    // en hectogramos
@@ -121,6 +123,33 @@ const cargarPokemons = async () => {
     promesas.push(obtenerPokemon(i));
   }
 
-  //return pokemones = await Promise.all(promesas);
   pokemons = await Promise.all(promesas);
 }
+
+function mostrarCuadricula(lista) {
+  const pokemonHTML = lista
+      .map((pokemon) => crearTarjeta(pokemon))
+      .join("");
+
+  cuadricula.innerHTML = pokemonHTML;
+}
+
+// === Para cargar la cuadrícula ===
+botonCargar.addEventListener("click", async (evento) => {
+
+  // Estado de carga
+  botonCargar.disabled = true;
+  mensaje.textContent = "Separando Pokémon de sus familias...";
+
+  try {
+    await cargarPokemons();
+
+    mostrarCuadricula(pokemons);
+    mensaje.textContent = "Listo!";
+
+  } catch (error) {
+    mensaje.textContent = error.message;
+  } finally {
+    botonCargar.disabled = false;
+  }
+});

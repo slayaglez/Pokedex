@@ -24,6 +24,8 @@ El árbol hasta ahora tiene la siguiente pinta:
 
 Aquí hay un ejemplo de su funcionamiento, tras buscar el número 77 este es el resultado. (Shinny porque se pedía una modificación de la mini-Pokedex y la dejé así).
 
+<br>
+
 ![img](assets/img/cap1.png)
 
 <br>
@@ -44,6 +46,7 @@ Cuenta con manejo de errores como mensajes específicos para cuando el pokemon n
 
 <a href="https://github.com/slayaglez/Pokedex/commit/4ee8bfbbe5a2972640afbce027bb45806157af1e"><img src="assets/img/checkpoint.png" style="height:100px"></a>
 
+<hr>
 
 ## 2. Rediseño y nueva estructura
 Antes de traer los 151 Pokémon he preparado la página para que estén cómodos y tengan sitio. De momento solo he tocado el HTML y el CSS, el JS sigue haciendo lo mismo que en el punto de partida.
@@ -152,6 +155,7 @@ El botón de cargar todavía no hace nada y la cuadrícula está vacía. Lo sigu
 
 <a href="https://github.com/slayaglez/Pokedex/commit/8468d67db4e4bc262301a77dd32c4011cb04fd2b"><img src="assets/img/checkpoint.png" style="height:100px"></a>
 
+<hr>
 
 ## 3. Un JavaScript salvaje ha aparecido
 ### Preparación
@@ -181,9 +185,64 @@ Si te fijas, `obtenerPokemon(i)` no devuelve un pokemon sino una promesa, entonc
 De esta forma no tenemos que esperar las 151 promesas una por una como un pringado, en su lugar esperamos por todas ellas como por tu ex.
 
 ### Checkpoint!
+<a href="https://github.com/slayaglez/Pokedex/commit/ee4fadb7f856f23f932db283983aebc6dc2d66ae"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+
+<hr>
+
+### Orquestarlo todo
+Creo que ya solo queda conectar todo entre sí y sacar la modi de mañana espero que sea fácil por favor.
+
+Vale pues hice un stream o como se llame en JavaScript (map creo) como se hizo en lo de los tipos pero con toda la tarjeta pokemon en html en su lugar.
+
+```javascript
+function mostrarCuadricula(lista) {
+    const pokemonHTML = lista
+        .map(() => crearTarjeta(pokemon))
+        .join("");
+
+    cuadricula.innerHTML = pokemonHTML;
+}
+```
+
+Esto implica que el stream recibe toda la lista de pokemon y la itera llamando a crearTarjeta por cada uno. Luego las une todas y las mete en el HTML, sabía que separar la función en dos me iba a ser cómodo en un par de párrafos.
+
+En teoría si hice bien el CSS y el HTML (80% de mi tiempo) no debería tener que hacer más que meter la lista de tarjetas HTML en la cuadrícula con `innerHTML`.
+
+Por último he copiado y pegado el event listener que teníamos para buscar pero cambiando un par de cosas a prueba y error, bastante intuitiva esta parte la verdad.
+
+```javascript
+botonCargar.addEventListener("click", async (evento) => {
+
+    // Estado de carga
+    botonCargar.disabled = true;
+    mensaje.textContent = "Separando Pokémon de sus familias...";
+
+    try {
+        await cargarPokemons();
+
+        mostrarCuadricula(pokemons);
+        mensaje.textContent = "Listo!";
+
+    } catch (error) {
+        mensaje.textContent = error.message;
+    } finally {
+        botonCargar.disabled = false;
+    }
+});
+```
+
+También decido ir guardándome ya el sprite del notas dado la vuelta porque sé que lo voy a necesitar y prefiero meterlo en este commit.
+
+Después de debugguear muchísimo, pero muchísimo (errores como que estaba accediendo al formulario en lugar de al documento en muchos sitios o que no le estaba dando argumentos al map) consigo tener un versión funcionando.
+
+![img](assets/img/grid.png)
+
+Facilito
+
+### Checkpoint!
 <a href="futurolink"><img src="assets/img/checkpoint.png" style="height:100px"></a>
 
-
+<hr>
 
 ## ANEXO
 ### **Preguntas respondidas durante el seguimiento de la práctica Mini-Pokedex.**
