@@ -77,7 +77,7 @@ const formatearId = (id) => {
 const mostrarPokemon = (pokemon) => {
   // Array de tipos → string de <span>s
   const tiposHTML = pokemon.tipos
-    .map((tipo) => `<span class="tipo">${tipo}</span>`)
+    .map((tipo) => `<span class="pokemon__tipo">${tipo}</span>`)
     .join("");
 
   // /10 para pasar dm → m y hg → kg

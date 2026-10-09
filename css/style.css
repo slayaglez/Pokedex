@@ -18,8 +18,14 @@ body {
   background-color: var(--gameboy-oscuro);
   color: var(--gameboy-oscuro);
   padding: 2rem 1rem;
+}
+
+/* Coloca el panel, el boton de carga y las tarjetas en columna */
+.pagina {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 /* Pantalla de juego */
@@ -31,17 +37,20 @@ body {
   box-shadow:
           inset 0 0 0 4px var(--pantalla-verde),
           inset 0 0 0 8px var(--gameboy-medio-oscuro);
-  padding: 2rem;
+  padding: 1.25rem;
 }
 
 h1 {
-  font-size: 1.5rem;
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 900;
   margin-bottom: 1.5rem;
   border-bottom: 4px double var(--gameboy-oscuro);
-  padding-bottom: 0.5rem;
+}
+
+/* Logo de la cabecera, sube y baja como si flotara */
+.titulo__imagen {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: flotar 2s infinite steps(3);
 }
 
 .introduccion {
@@ -86,7 +95,7 @@ h1 {
 }
 
 /* Botón interactivo 8-bits */
-.buscador button[type="submit"] {
+.boton {
   font-family: var(--fuente-retro);
   font-size: 1rem;
   font-weight: bold;
@@ -97,18 +106,32 @@ h1 {
   border: 3px solid var(--gameboy-oscuro);
   box-shadow: 0 4px 0 var(--gameboy-oscuro);
   position: relative;
+  cursor: pointer;
 }
 
-.buscador button[type="submit"]:active {
+.boton:active {
   top: 4px;
   box-shadow: 0 0 0 var(--gameboy-oscuro);
+}
+
+.boton:disabled {
+  background-color: var(--gameboy-medio-claro);
+  color: var(--gameboy-oscuro);
+  cursor: not-allowed;
+}
+
+/* Boton que carga los 151, debajo del panel */
+.boton--cargar {
+  width: 100%;
+  max-width: 420px;
+  border-color: var(--pantalla-verde);
+  box-shadow: 0 4px 0 var(--gameboy-medio-oscuro);
 }
 
 /* Mensajes con cursor parpadeante */
 .mensaje {
   font-size: 0.8rem;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
   min-height: 1.2rem;
 }
 
@@ -123,16 +146,6 @@ h1 {
   grid-template-columns: 1fr;
   gap: 1rem;
   margin-top: 1rem;
-}
-
-/* Tarjetas inyectadas por JS */
-.resultado__tarjeta {
-  background-color: var(--gameboy-claro);
-  border: 3px dashed var(--gameboy-oscuro);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 /* TARJETA DE JS */
@@ -161,6 +174,7 @@ h1 {
   width: 150px;
   height: 150px;
   object-fit: contain;
+  image-rendering: pixelated;
   background-color: var(--pantalla-verde);
   border: 3px solid var(--gameboy-oscuro);
   padding: 0.5rem;
@@ -172,6 +186,7 @@ h1 {
   font-weight: 900;
   text-transform: uppercase;
   text-align: center;
+  overflow-wrap: anywhere;
   width: 100%;
   border-bottom: 4px double var(--gameboy-oscuro);
   padding-bottom: 0.25rem;
@@ -199,12 +214,12 @@ h1 {
 .pokemon__tipos {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   width: 100%;
 }
 
 /* Estilo para las etiquetas inyectadas dentro de ${tiposHTML} */
-/* Nota: Ajusta la clase si tu JS genera un nombre diferente para las etiquetas */
 .pokemon__tipos span,
 .pokemon__tipo {
   font-size: 0.75rem;
@@ -215,9 +230,77 @@ h1 {
   background-color: var(--pantalla-verde);
 }
 
+/* Cuadricula con los 151, fuera del panel */
+.cuadricula {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.75rem;
+}
 
+/* Dentro de la cuadricula las tarjetas son mas pequenas */
+.cuadricula .pokemon {
+  border-color: var(--gameboy-medio-oscuro);
+  padding: 0.75rem;
+  gap: 0.5rem;
+}
+
+.cuadricula .pokemon__numero {
+  font-size: 0.75rem;
+}
+
+.cuadricula .pokemon__imagen {
+  width: 110px;
+  height: 110px;
+  padding: 4px;
+}
+
+.cuadricula .pokemon__nombre {
+  font-size: 0.9rem;
+  margin-top: 0;
+}
+
+.cuadricula .pokemon__datos {
+  font-size: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.cuadricula .pokemon__datos strong {
+  font-size: 0.7rem;
+}
+
+.cuadricula .pokemon__tipos {
+  gap: 0.25rem;
+}
+
+.cuadricula .pokemon__tipo {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.4rem;
+}
 
 @keyframes parpadeo-cursor {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
+}
+
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Pantallas grandes */
+@media (min-width: 600px) {
+  .contenedor {
+    padding: 2rem;
+  }
+
+  .cuadricula {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 1rem;
+  }
+
+  .cuadricula .pokemon__nombre {
+    font-size: 1rem;
+  }
 }
