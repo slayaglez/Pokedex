@@ -233,7 +233,6 @@ h1 {
 }
 
 /* Estilo para las etiquetas inyectadas dentro de ${tiposHTML} */
-.pokemon__tipos span,
 .pokemon__tipo {
   font-size: 0.75rem;
   font-weight: bold;
@@ -241,6 +240,97 @@ h1 {
   padding: 0.25rem 0.6rem;
   border: 2px solid var(--gameboy-oscuro);
   background-color: var(--pantalla-verde);
+}
+
+/* Un color de fondo por tipo */
+.pokemon__tipo--normal { background-color: #c8c8a0; }
+.pokemon__tipo--fire { background-color: #f0a060; }
+.pokemon__tipo--water { background-color: #80b0f0; }
+.pokemon__tipo--electric { background-color: #f8e060; }
+.pokemon__tipo--grass { background-color: #90d070; }
+.pokemon__tipo--ice { background-color: #b0e8e8; }
+.pokemon__tipo--fighting { background-color: #e08070; }
+.pokemon__tipo--poison { background-color: #c890d0; }
+.pokemon__tipo--ground { background-color: #e8d090; }
+.pokemon__tipo--flying { background-color: #c0b0f8; }
+.pokemon__tipo--psychic { background-color: #f890b0; }
+.pokemon__tipo--bug { background-color: #c0d040; }
+.pokemon__tipo--rock { background-color: #d0b860; }
+.pokemon__tipo--ghost { background-color: #a898c8; }
+.pokemon__tipo--dragon { background-color: #a088f8; }
+.pokemon__tipo--steel { background-color: #c8c8d8; }
+.pokemon__tipo--fairy { background-color: #f8b8d0; }
+
+/* Boton de ver detalles dentro de la tarjeta */
+.pokemon__boton {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 0.5rem;
+}
+
+/* Panel de detalles */
+.detalles {
+  width: 90%;
+  max-width: 420px;
+  max-height: 90vh;
+  margin: auto;
+  overflow-y: auto;
+  font-family: var(--fuente-retro);
+  color: var(--gameboy-oscuro);
+  background-color: var(--pantalla-verde);
+  border: 4px solid var(--gameboy-oscuro);
+  box-shadow:
+          inset 0 0 0 4px var(--pantalla-verde),
+          inset 0 0 0 8px var(--gameboy-medio-oscuro);
+  padding: 1.5rem;
+}
+
+/* Fondo oscuro detras del panel abierto */
+.detalles::backdrop {
+  background-color: rgba(15, 56, 15, 0.8);
+}
+
+.detalles__contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detalles__imagen {
+  width: 200px;
+  height: 200px;
+}
+
+.detalles__titulo {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.detalles__habilidades {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.detalles__estadisticas {
+  width: 100%;
+  list-style: none;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.detalles__estadistica {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--gameboy-medio-oscuro);
+  padding: 0.25rem 0;
+}
+
+.detalles .boton {
+  width: 100%;
 }
 
 /* Cuadricula con los 151, fuera del panel */
@@ -290,6 +380,10 @@ h1 {
 .cuadricula .pokemon__tipo {
   font-size: 0.65rem;
   padding: 0.2rem 0.4rem;
+}
+
+.cuadricula .pokemon__boton {
+  font-size: 0.7rem;
 }
 
 @keyframes parpadeo-cursor {

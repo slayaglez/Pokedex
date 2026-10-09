@@ -6,7 +6,21 @@ const resultado = document.querySelector("#resultado"); // donde se pinta la tar
 const botonBuscar = formulario.querySelector("button");
 const botonCargar = document.querySelector("#boton-cargar");
 const cuadricula = document.querySelector("#cuadricula");
+const detalles = document.querySelector("#detalles");
+const detallesContenido = document.querySelector("#detalles-contenido");
+const botonCerrar = document.querySelector("#boton-cerrar");
 let pokemons = [];
+let pokemonBuscado = null; // el que esta en la tarjeta grande
+
+// Nombres de las estadisticas tal como vienen de la API y como los mostramos
+const nombresEstadisticas = {
+  "hp": "Salud",
+  "attack": "Ataque",
+  "defense": "Defensa",
+  "special-attack": "Ataque esp.",
+  "special-defense": "Defensa esp.",
+  "speed": "Velocidad",
+};
 
 
 // ===== API: pide el Pokémon y devuelve solo lo que usamos =====
@@ -76,15 +90,21 @@ const formatearId = (id) => {
 
 // Solo muestra la tarjeta
 const mostrarPokemon = (pokemon) => {
+  pokemonBuscado = pokemon;
   resultado.innerHTML = crearTarjeta(pokemon);
 };
+
+// Array de tipos a etiquetas, cada una con la clase de su color
+function crearTipos(tipos) {
+  return tipos
+      .map((tipo) => `<span class="pokemon__tipo pokemon__tipo--${tipo}">${tipo}</span>`)
+      .join("");
+}
 
 // Devuelve solo la tarjeta html con la info ya ready
 function crearTarjeta(pokemon) {
 
-  const tiposHTML = pokemon.tipos
-      .map((tipo) => `<span class="pokemon__tipo">${tipo}</span>`)
-      .join("");
+  const tiposHTML = crearTipos(pokemon.tipos);
 
   const stringHtml = `
     <article class="pokemon">
@@ -112,11 +132,78 @@ function crearTarjeta(pokemon) {
       <div class="pokemon__tipos">
         ${tiposHTML}
       </div>
+
+      <button class="boton pokemon__boton" type="button" data-id="${pokemon.id}">Ver detalles</button>
     </article>
   `;
 
   return stringHtml;
 }
+
+// Rellena el panel de detalles con un pokemon y lo abre
+function abrirDetalles(pokemon) {
+  const estadisticasHTML = pokemon.estadisticas
+      .map((estadistica) => `
+        <li class="detalles__estadistica">
+          <span>${nombresEstadisticas[estadistica.nombre]}</span>
+          <strong>${estadistica.valor}</strong>
+        </li>
+      `)
+      .join("");
+
+  detallesContenido.innerHTML = `
+    <p class="pokemon__numero">N.º ${formatearId(pokemon.id)}</p>
+
+    <img
+      class="pokemon__imagen detalles__imagen"
+      src="${pokemon.imagen}"
+      alt="Imagen de ${pokemon.nombre} de frente"
+    >
+
+    <h2 class="pokemon__nombre">${pokemon.nombre}</h2>
+
+    <div class="pokemon__tipos">
+      ${crearTipos(pokemon.tipos)}
+    </div>
+
+    <div class="pokemon__datos">
+      <p><strong>Altura</strong><br>${pokemon.alturaEnMetros()} m</p>
+      <p><strong>Peso</strong><br>${pokemon.pesoEnKilos()} kg</p>
+      <p><strong>Exp. base</strong><br>${pokemon.experiencia}</p>
+    </div>
+
+    <h3 class="detalles__titulo">Habilidades</h3>
+    <p class="detalles__habilidades">${pokemon.habilidades.join(", ")}</p>
+
+    <h3 class="detalles__titulo">Estadísticas base</h3>
+    <ul class="detalles__estadisticas">
+      ${estadisticasHTML}
+    </ul>
+  `;
+
+  detalles.showModal();
+}
+
+// Boton "Ver detalles" de las tarjetas de la cuadricula
+cuadricula.addEventListener("click", (evento) => {
+  if (evento.target.classList.contains("pokemon__boton")) {
+    const id = Number(evento.target.dataset.id);
+    const pokemon = pokemons.find((pokemon) => pokemon.id === id);
+
+    abrirDetalles(pokemon);
+  }
+});
+
+// Boton "Ver detalles" de la tarjeta grande del buscador
+resultado.addEventListener("click", (evento) => {
+  if (evento.target.classList.contains("pokemon__boton")) {
+    abrirDetalles(pokemonBuscado);
+  }
+});
+
+botonCerrar.addEventListener("click", () => {
+  detalles.close();
+});
 
 
 const cargarPokemons = async () => {

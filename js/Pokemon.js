@@ -9,6 +9,11 @@ class Pokemon {
         this.altura = datos.height;
         this.peso = datos.weight;
         this.tipos = datos.types.map(({ type }) => type.name);
+        this.experiencia = datos.base_experience;
+        this.habilidades = datos.abilities.map(({ ability }) => ability.name);
+        this.estadisticas = datos.stats.map((dato) => {
+            return { nombre: dato.stat.name, valor: dato.base_stat };
+        });
     }
 
     alturaEnMetros() {
