@@ -78,7 +78,8 @@ h1 {
   gap: 0.75rem;
 }
 
-.buscador input[type="text"] {
+.buscador input[type="text"],
+.buscador select {
   font-family: var(--fuente-retro);
   font-size: 1rem;
   padding: 0.5rem;
@@ -87,6 +88,21 @@ h1 {
   color: var(--gameboy-oscuro);
   outline: none;
   text-transform: uppercase;
+}
+
+/* La etiqueta del selector va dentro de los controles, que ya tienen separacion */
+.buscador__controles label {
+  margin-bottom: -0.25rem;
+}
+
+.buscador select {
+  cursor: pointer;
+}
+
+/* Hasta que no se cargan los pokemon no hay tipos que elegir */
+.buscador select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .buscador input[type="text"]::placeholder {
