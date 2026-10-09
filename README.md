@@ -427,6 +427,14 @@ Modifiqué la función de aplicar búsqueda que es la que está conectada al eve
 
 También señalar que el botón de Invocar Pokemon ya reinicia buscador y filtro sin recargar la página.
 
+### Modificación 2:
+Esta vez me mojé más y creé dos funciones nuevas al final de `app.js` llamadas `botonAleatorio` y `pokemonAleatorio`. La primera es un event listener que espera a que el botón aleatorio sea pulsado y la segunda es una que genera un número aleatorio y llama a `obtenerPokemon()`, el cual hace una llamada a la API con el numero aleatorio dentro del rango marcado.
+
+El resto de la lógica permanece igual pues lo integré al pipeline reutilizando todas las funciones que usa el invocar pokemon original.
+
+Pruebas:
+
+![img](assets/img/modif/modif2a.png)
 
 
 ## ANEXO

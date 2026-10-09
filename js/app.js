@@ -6,6 +6,7 @@ const resultado = document.querySelector("#resultado"); // donde se pinta la tar
 const filtroTipo = document.querySelector("#filtro-tipo");
 const botonBuscar = formulario.querySelector("button");
 const botonCargar = document.querySelector("#boton-cargar");
+const botonAleatorio = document.querySelector("#boton-random");
 const cuadricula = document.querySelector("#cuadricula");
 const detalles = document.querySelector("#detalles");
 const detallesContenido = document.querySelector("#detalles-contenido");
@@ -326,3 +327,39 @@ botonCargar.addEventListener("click", async (evento) => {
     botonCargar.disabled = false;
   }
 });
+
+botonAleatorio.addEventListener("click", async (evento) => {
+
+  // Estado de carga
+  botonAleatorio.disabled = true;
+  mensaje.textContent = "Buscando Pokémon aleatorio...";
+
+  try {
+    await pokemonAleatorio();
+
+    // Empezamos con el buscador limpio y el random a la vista
+    inputBusqueda.value = "";
+    resultado.innerHTML = "";
+    rellenarTipos();
+    mostrarCuadricula(pokemons);
+    mensaje.textContent = `Actualmente hay ${pokemons.length} Pokemon.`;
+
+  } catch (error) {
+    console.error(error);
+    mensaje.textContent = "No se pudieron cargar los Pokémon. Pulsa el botón para reintentarlo.";
+  } finally {
+    botonCargar.disabled = false;
+  }
+});
+
+
+const pokemonAleatorio = async () => {
+  const promesas = [];
+
+  const numeroAleatorio = Math.floor(Math.random() * (1025 - 152 + 1)) + 152
+ 
+  promesas.push(obtenerPokemon(numeroAleatorio));
+
+  pokemons = await Promise.all(promesas);
+
+}
