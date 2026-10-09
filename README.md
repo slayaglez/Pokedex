@@ -416,6 +416,19 @@ De esa forma si sabes el tipo de un pokemon ej. "volador" y también sabes que e
 
 de hecho este link no lo puedo poner, porque si es el último commit no puedo poner el enlace antes de hacerlo. (Pero dejo el dibujo en plan simbólico)
 
+## Modificaciones.
+
+### Modificación 1:
+Modifiqué la función de aplicar búsqueda que es la que está conectada al event listener y la que actualiza el mensaje de búsqueda en tiempo real, de esta forma si no hay resultados devuelve eso, si hay uno solo devuelve ese solo y si hay más de uno devuelve el número exacto de pokemon que aparecen en la cuadrícula.
+
+![img](assets/img/modif/modif1a.png)
+![img](assets/img/modif/modif1b.png)
+![img](assets/img/modif/modif1c.png)
+
+También señalar que el botón de Invocar Pokemon ya reinicia buscador y filtro sin recargar la página.
+
+
+
 ## ANEXO
 ### Conclusiones
 

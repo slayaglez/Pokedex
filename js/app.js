@@ -273,22 +273,21 @@ function rellenarTipos() {
 function aplicarBusqueda() {
   const busqueda = inputBusqueda.value.trim().toLowerCase();
   const tipo = filtroTipo.value;
+  const lista = filtrarPokemons(busqueda, tipo);
 
   resultado.innerHTML = "";
-  mensaje.textContent = "";
-
-  // Con la barra vacia y el tipo en "Todos" salen los 151
-  const lista = filtrarPokemons(busqueda, tipo);
+  mensaje.textContent = `Actualmente hay ${lista.length} Pokemon.`;
+  
   mostrarCuadricula(lista);
 
   if (lista.length === 0) {
     mensaje.textContent = "Ningún Pokémon coincide con la búsqueda";
+  }else if (lista.length === 1) {
+    mostrarPokemon(lista[0]);
+  }else {
+    mensaje.textContent = `Actualmente hay ${lista.length} Pokemon.`;
   }
 
-  // Si solo queda uno lo mostramos tambien en grande
-  if (lista.length === 1) {
-    mostrarPokemon(lista[0]);
-  }
 }
 
 // Filtra mientras se escribe, solo si ya se cargaron
@@ -318,7 +317,7 @@ botonCargar.addEventListener("click", async (evento) => {
     resultado.innerHTML = "";
     rellenarTipos();
     mostrarCuadricula(pokemons);
-    mensaje.textContent = "Listo!";
+    mensaje.textContent = `Actualmente hay ${pokemons.length} Pokemon.`;
 
   } catch (error) {
     console.error(error);
