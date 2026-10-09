@@ -309,14 +309,15 @@ pesoEnKilos() {
 
 ### Sprites
 
-Los sprites deben estar dados la vuelta hasta que pasas el cursor por encima, pero como no me gusta la idea de que todos me den la espalda, lo voy a hacer al revés, se darán la vuelta cuando los vayas a seleccionar, así como tímiditos jajajaja.
+Los sprites deben estar dados la vuelta hasta que pasas el cursor por encima, pero como no me gusta la idea de que todos me den la espalda, lo voy a hacer al revés, se darán la vuelta cuando los vayas a seleccionar, así como timiditos jajajaja.
 
-Ya hice el CSS pensando en este momento porque estoy en todo así que es solo JS de nuevo, solo tuve que editar el `crearTarjeta()` para que tuviera dos imágenes y se enseñe una y oculte la otra según el cursor.
+Ya hice el CSS pensando en este momento porque estoy en todo, así que es solo JS de nuevo, solo tuve que editar el `crearTarjeta()` para que tuviera dos imágenes, se enseñe una y se oculte la otra según el cursor.
 
 **Mientras probaba descubrí que Exeggcute tiene un integrante super marginado, adjunto captura:**
 
 ![img](assets/img/frontPokemon.png)
 ![img](assets/img/backPokemon.png)
+
 pobrecito
 
 bueno
@@ -328,15 +329,15 @@ bueno
 
 ## 5. Puliendo el proyecto
 
-Ahora si que me vine arriba, la verdad es que no entendí bien el enunciado y creí que había que añadir la predicción de búsqueda paralelamente al buscador. En fin fue lo que hice.
+Ahora sí que me vine arriba, la verdad es que no entendí bien el enunciado y creí que había que añadir la predicción de búsqueda paralelamente al buscador. En fin fue lo que hice.
 
-Una vez hayas invocado a los pokemon se hará una predicción de qué pokemon buscas, cuando solo pueda ser uno se pondrá en grande.
+Una vez hayas invocado a los pokemon se hará una predicción de qué pokemon buscas, cuando sólo pueda ser uno, este se pondrá en grande.
 
-Me tomó más de 3 funciones y un event listener pero creo que mereció la pena. Este es un ejemplo:
+Me tomó más de tres funciones y un event listener, pero creo que mereció la pena. Este es un ejemplo:
 
 ![img](assets/img/predict.png)
 
-El código básicamente escucha el input del buscador y por cada cambio filtra con un map el array de pokemon que ya teníamos, eso hace que nos ahorremos llamadas a la API pero que la prediccion solo funcione con los 151 pokemon guardados.
+El código básicamente escucha el input del buscador y por cada cambio, filtra con un map el array de pokemon que ya teníamos, eso hace que nos ahorremos llamadas a la API, pero que la prediccion solo funcione con los 151 pokemon guardados.
 
 ### Checkpoint!
 <a href="https://github.com/slayaglez/Pokedex/commit/3344d2206b0e0aceb01b88744936b6e3827cfbd4"><img src="assets/img/checkpoint.png" style="height:100px"></a>
@@ -345,12 +346,12 @@ El código básicamente escucha el input del buscador y por cada cambio filtra c
 
 ### Detalles en las tarjetas
 
-Para hacer los detalles en las tarjetas introduje las propiedades nuevas en la clase `Pokemon.js` luego me atreví a tocar el HTML para crear un div flotante donde se verán los detalles, así no tengo que tocar el grid porque me da miedo.
+Para hacer los detalles en las tarjetas introduje las propiedades nuevas en la clase `Pokemon.js`, luego me atreví a tocar el HTML para crear un div flotante donde se verán los detalles, así no tengo que tocar el grid porque me da miedo.
 
 Entonces creé 4 piezas clave en `app.js` 
 - nombresEstadisticas: traduce el nombre de la API a algo legible, ej ("special_attack" -> "Ataque esp.")
-- botón en la tajeta: `crearTarjeta` también crea un botón q guarda los datos en el propio HTML para luego leerlo con JS (la verdad es que aunque lo hiciera yo la idea me la dio un amigo)
-- abrirDetalles(pokemon): Monta el HTML en un panel, lo mete en el div y llama a `detalles.showModal()` pensé que así sería más fácil que extender el div de la tarjeta de la grid, pero ya no estoy seguro.
+- botón en la tajeta: `crearTarjeta` también crea un botón q guarda los datos en el propio HTML para luego leerlo con JS (la verdad es que aunque lo hiciera yo, la idea me la dió un amigo)
+- abrirDetalles(pokemon): Monta el HTML en un panel, lo mete en el div y llama a `detalles.showModal()`, pensé que así sería más fácil que extender el div de la tarjeta de la grid, pero ya no estoy seguro.
 - Un solo listener para la cuadrícula: A lo mejor parece obvio pero estuve a punto de crear uno por botón.
 
 Verás:
@@ -365,13 +366,13 @@ cuadricula.addEventListener("click", (evento) => {
 });
 ```
 
-Si las tarjetas se crean y borran todo el tiempo no puedo manejar los event listeners tan rápido, lo que si puedo hacer es crear uno en el grid y con `evento.target` comprobar qué se pulsó dentro del grid.
+Si las tarjetas se crean y se borran todo el tiempo, no puedo manejar los event listeners tan rápido, lo que si puedo hacer es crear uno en el grid y con `evento.target` comprobar qué se pulsó dentro del grid.
 
-Creí que tuve una idea tremenda pero al parecer es el estándar para casi todo. Por añadir sensaciones personales al ejercicio.
+Creí que tuve una idea tremenda pero al parecer es el estándar para casi todo y me sentí medio mal. Por añadir sensaciones personales al ejercicio.
 
 ![img](assets/img/detalles.png)
 
-Aunque hablo sobre el uso de la IA en el anexo quiero aclarar que para hacer la tarjetita en CSS y HTML se lo pedí a una IA porque sino no me da tiempo y prefiero centrarme en JS. Sé lo que hizo y cómo hacerlo pero escojí delegar la tarea.
+Aunque hablo sobre el uso de la IA en el anexo quiero aclarar que para hacer la tarjetita de CSS y HTML, se lo pedí a una IA porque si no, no me da tiempo y prefiero centrarme en JS. Sé lo que hizo y cómo hacerlo pero escogí delegar la tarea.
 
 ### Checkpoint!
 <a href="https://github.com/slayaglez/Pokedex/commit/8ae6c4f5401cb0afa78827e34e2dcc01a26905fd"><img src="assets/img/checkpoint.png" style="height:100px"></a>
