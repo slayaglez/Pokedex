@@ -294,9 +294,39 @@ Me tomó más de 3 funciones y un event listener pero creo que mereció la pena.
 El código básicamente escucha el input del buscador y por cada cambio filtra con un map el array de pokemon que ya teníamos, eso hace que nos ahorremos llamadas a la API pero que la prediccion solo funcione con los 151 pokemon guardados.
 
 ### Checkpoint!
-<a href="futurolink"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+<a href="https://github.com/slayaglez/Pokedex/commit/3344d2206b0e0aceb01b88744936b6e3827cfbd4"><img src="assets/img/checkpoint.png" style="height:100px"></a>
 
 <hr>
+
+### Detalles en las tarjetas
+
+Para hacer los detalles en las tarjetas introduje las propiedades nuevas en la clase `Pokemon.js` luego me atreví a tocar el HTML para crear un div flotante donde se verán los detalles, así no tengo que tocar el grid porque me da miedo.
+
+Entonces creé 4 piezas clave en `app.js` 
+- nombresEstadisticas: traduce el nombre de la API a algo legible, ej ("special_attack" -> "Ataque esp.")
+- botón en la tajeta: `crearTarjeta` también crea un botón q guarda los datos en el propio HTML para luego leerlo con JS (la verdad es que aunque lo hiciera yo la idea me la dio un amigo)
+- abrirDetalles(pokemon): Monta el HTML en un panel, lo mete en el div y llama a `detalles.showModal()` pensé que así sería más fácil que extender el div de la tarjeta de la grid, pero ya no estoy seguro.
+- Un solo listener para la cuadrícula: A lo mejor parece obvio pero estuve a punto de crear uno por botón.
+
+Verás:
+```javascript
+cuadricula.addEventListener("click", (evento) => {
+  if (evento.target.classList.contains("pokemon__boton")) {
+    const id = Number(evento.target.dataset.id);
+    const pokemon = pokemons.find((pokemon) => pokemon.id === id);
+
+    abrirDetalles(pokemon);
+  }
+});
+```
+
+Si las tarjetas se crean y borran todo el tiempo no puedo manejar los event listeners tan rápido, lo que si puedo hacer es crear uno en el grid y con `evento.target` comprobar qué se pulsó dentro del grid.
+
+Creí que tuve una idea tremenda pero al parecer es el estándar para casi todo. Por añadir sensaciones personales al ejercicio.
+
+### Checkpoint!
+<a href="tengomuchosueño"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+
 
 ## ANEXO
 ### **Preguntas respondidas durante el seguimiento de la práctica Mini-Pokedex.**
