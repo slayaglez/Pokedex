@@ -3,6 +3,7 @@ const formulario = document.querySelector("#formulario-busqueda");
 const inputBusqueda = document.querySelector("#busqueda");
 const mensaje = document.querySelector("#mensaje");     // estados: error / cargando
 const resultado = document.querySelector("#resultado"); // donde se pinta la tarjeta
+const filtroTipo = document.querySelector("#filtro-tipo");
 const botonBuscar = formulario.querySelector("button");
 const botonCargar = document.querySelector("#boton-cargar");
 const cuadricula = document.querySelector("#cuadricula");
@@ -28,9 +29,14 @@ const obtenerPokemon = async (busqueda) => {
   const url = `https://pokeapi.co/api/v2/pokemon/${busqueda}`;
   const respuesta = await fetch(url);
 
-  // 404 u otro fallo --> salta al catch del submit
+  // 404: ese Pokemon no existe, no es un fallo
+  if (respuesta.status === 404) {
+    return null;
+  }
+
+  // Cualquier otro fallo de la API salta al catch de quien llama
   if (!respuesta.ok) {
-    throw new Error("No se encontró ningún Pokémon.");
+    throw new Error("Respuesta incorrecta de la API");
   }
 
   const datos = await respuesta.json();
@@ -67,6 +73,11 @@ formulario.addEventListener("submit", async (evento) => {
   try {
     const pokemon = await obtenerPokemon(busqueda);
 
+    if (pokemon === null) {
+      mensaje.textContent = "No se encontró ningún Pokémon.";
+      return;
+    }
+
     // Limpiamos búsqueda y devolvemos foco
     inputBusqueda.value = "";
     inputBusqueda.focus();
@@ -74,7 +85,9 @@ formulario.addEventListener("submit", async (evento) => {
     mostrarPokemon(pokemon);
     mensaje.textContent = "";
   } catch (error) {
-    mensaje.textContent = error.message; // el throw de obtenerPokemon o fallo de red
+    // Fallo de red o de la API: mensaje nuestro, el tecnico va a la consola
+    console.error(error);
+    mensaje.textContent = "No se pudo conectar con la PokéAPI. Inténtalo de nuevo.";
   } finally {
     botonBuscar.disabled = false;
 }
@@ -225,26 +238,47 @@ function mostrarCuadricula(lista) {
 }
 
 // Devuelve los pokemon cargados que coinciden por nombre o por id
-function filtrarPokemons(texto) {
+function filtrarPokemons(texto, tipo) {
   return pokemons.filter((pokemon) => {
-    return pokemon.nombre.includes(texto) || pokemon.id === Number(texto);
+    const coincideTexto = texto === "" || pokemon.nombre.includes(texto) || pokemon.id === Number(texto);
+    const coincideTipo = tipo === "" || pokemon.tipos.includes(tipo);
+
+    return coincideTexto && coincideTipo;
   });
 }
 
-// Filtra la cuadricula con lo que haya escrito en el buscador
+// Rellena el selector con los tipos que tienen los pokemon cargados
+function rellenarTipos() {
+  const tipos = [];
+
+  pokemons.forEach((pokemon) => {
+    pokemon.tipos.forEach((tipo) => {
+      if (!tipos.includes(tipo)) {
+        tipos.push(tipo);
+      }
+    });
+  });
+
+  tipos.sort();
+
+  const opcionesHTML = tipos
+      .map((tipo) => `<option value="${tipo}">${tipo}</option>`)
+      .join("");
+
+  filtroTipo.innerHTML = `<option value="">Todos</option>` + opcionesHTML;
+  filtroTipo.disabled = false;
+}
+
+// Filtra la cuadricula con el texto del buscador y el tipo elegido
 function aplicarBusqueda() {
   const busqueda = inputBusqueda.value.trim().toLowerCase();
+  const tipo = filtroTipo.value;
 
   resultado.innerHTML = "";
   mensaje.textContent = "";
 
-  // Barra vacia: vuelven a salir todos
-  if (!busqueda) {
-    mostrarCuadricula(pokemons);
-    return;
-  }
-
-  const lista = filtrarPokemons(busqueda);
+  // Con la barra vacia y el tipo en "Todos" salen los 151
+  const lista = filtrarPokemons(busqueda, tipo);
   mostrarCuadricula(lista);
 
   if (lista.length === 0) {
@@ -264,6 +298,11 @@ inputBusqueda.addEventListener("input", () => {
   }
 });
 
+// Filtra al cambiar el tipo en el selector
+filtroTipo.addEventListener("change", () => {
+  aplicarBusqueda();
+});
+
 // === Para cargar la cuadrícula ===
 botonCargar.addEventListener("click", async (evento) => {
 
@@ -277,11 +316,13 @@ botonCargar.addEventListener("click", async (evento) => {
     // Empezamos con el buscador limpio y los 151 a la vista
     inputBusqueda.value = "";
     resultado.innerHTML = "";
+    rellenarTipos();
     mostrarCuadricula(pokemons);
     mensaje.textContent = "Listo!";
 
   } catch (error) {
-    mensaje.textContent = error.message;
+    console.error(error);
+    mensaje.textContent = "No se pudieron cargar los Pokémon. Pulsa el botón para reintentarlo.";
   } finally {
     botonCargar.disabled = false;
   }

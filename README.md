@@ -1,5 +1,50 @@
 # Pokedex
-Una Pokedex, nacida de un proyecto para la asignatura PGL de 1º DAM.
+Una Pokedex, nacida de un proyecto para la asignatura PGL de 2º DAM. Asignatura impartida por Sara Pérez Rodríguez.
+
+**Proyecto creado y trabajado por Sebastián Laya González.**
+
+**Oct 2026**
+
+**slayaglez en Github.**
+
+<hr>
+
+## Índice de contenidos
+<details> <summary><b>Click para ver índice</b></summary>
+
+- [1. Punto de partida](#1-punto-de-partida)
+    - [Funcionalidades](#funcionalidades)
+    - [Check-Point!](#check-point)
+- [2. Rediseño y nueva estructura](#2-rediseo-y-nueva-estructura)
+    - [Cambios en el HTML](#cambios-en-el-html)
+    - [Cambios en el CSS](#cambios-en-el-css)
+    - [Problemas encontrados](#problemas-encontrados)
+    - [Pendiente](#pendiente)
+    - [Checkpoint!](#checkpoint)
+- [3. Un JavaScript salvaje ha aparecido](#3-un-javascript-salvaje-ha-aparecido)
+    - [Preparación](#preparacin)
+    - [Problema](#problema)
+    - [Solución](#solucin)
+    - [Checkpoint!](#checkpoint-1)
+    - [Orquestarlo todo](#orquestarlo-todo)
+    - [Checkpoint!](#checkpoint-2)
+- [4. Creamos la clase y sus modificaciones](#4-creamos-la-clase-y-sus-modificaciones)
+    - [Sprites](#sprites)
+    - [Checkpoint!](#checkpoint-3)
+- [5. Puliendo el proyecto](#5-puliendo-el-proyecto)
+    - [Checkpoint!](#checkpoint-4)
+    - [Detalles en las tarjetas](#detalles-en-las-tarjetas)
+    - [Checkpoint!](#checkpoint-5)
+    - [Debugging](#debugging)
+    - [Final Checkpoint!](#final-checkpoint)
+- [ANEXO](#anexo)
+    - [Conclusiones](#conclusiones)
+    - [Preguntas respondidas durante el seguimiento de la práctica Mini-Pokedex.](#preguntas-respondidas-durante-el-seguimiento-de-la-prctica-mini-pokedex)
+- [Uso de IA](#uso-de-ia)
+    - [Reflexión final](#reflexin-final)
+</details>
+
+<hr>
 
 ## 1. Punto de partida
 Empezamos con el proyecto "Mini-pokedex" como base, un programa en JS que se conecta a una API para traer y tratar información básica del mundo Pokemon. Esta información se representa en navegador con HTML y CSS.
@@ -324,11 +369,65 @@ Si las tarjetas se crean y borran todo el tiempo no puedo manejar los event list
 
 Creí que tuve una idea tremenda pero al parecer es el estándar para casi todo. Por añadir sensaciones personales al ejercicio.
 
-### Checkpoint!
-<a href="tengomuchosueño"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+![img](assets/img/detalles.png)
 
+Aunque hablo sobre el uso de la IA en el anexo quiero aclarar que para hacer la tarjetita en CSS y HTML se lo pedí a una IA porque sino no me da tiempo y prefiero centrarme en JS. Sé lo que hizo y cómo hacerlo pero escojí delegar la tarea.
+
+### Checkpoint!
+<a href="https://github.com/slayaglez/Pokedex/commit/8ae6c4f5401cb0afa78827e34e2dcc01a26905fd"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+
+### Debugging
+Resolví el tema de los mensajes, en caso de error ya no es el mismo generalizado sino uno propio para cada caso, si falla la API, si no existe el pokemon... etc.
+
+También terminé con el tema de los tipos, que ahora son un filtro de búsqueda, esta vez no incurrí en el apartado visual así que explico el código:
+
+Creé un botón en HTML disabled hasta que se haga la llamada a la API, luego rellené los tipos con las opciones que traen los pokemon tal que así
+
+```javascript
+pokemons.forEach((pokemon) => {
+  pokemon.tipos.forEach((tipo) => {
+    if (!tipos.includes(tipo)) {
+      tipos.push(tipo);
+    }
+  });
+});
+```
+
+Sencillo, un bucle recorre los pokemon y el otro sus tipos guardando los que no tenga ya.
+
+Luego `filtrarPokemons()` ahora recibe dos cosas así que hacemos:
+
+```javascript
+const coincideTexto = texto === "" || pokemon.nombre.includes(texto) || pokemon.id === Number(texto);
+const coincideTipo = tipo === "" || pokemon.tipos.includes(tipo);
+
+return coincideTexto && coincideTipo;
+```
+
+De esa forma si sabes el tipo de un pokemon ej. "volador" y también sabes que empieza por "char", Charizard será la única coincidencia.
+
+`aplicarBusqueda()` también lee filtroTipo.value y se lo pasa al filtrarPokemons
+
+<hr>
+
+### Final Checkpoint!
+<a href="https://github.com/slayaglez/Pokedex"><img src="assets/img/checkpoint.png" style="height:100px"></a>
+
+de hecho este link no lo puedo poner, porque si es el último commit no puedo poner el enlace antes de hacerlo. (Pero dejo el dibujo en plan simbólico)
 
 ## ANEXO
+### Conclusiones
+
+Lo que más me costó fue entender la parte asíncrona. Al principio pensé que la API tendría una llamada para traer todos los Pokémon de golpe, pero esa llamada solo devuelve nombres y enlaces, así que hubo que pedir los 151 uno a uno y esperar a todos con `Promise.all`. 
+
+También perdí un buen rato con el botón de cargar, que no hacía nada porque estaba buscando el botón dentro del formulario cuando en realidad estaba fuera, y con el buscador, porque entendí mal el enunciado y lo planteé como algo independiente de la cuadrícula.
+
+En el diseño el problema fue más tonto: al poner las tarjetas sobre el fondo oscuro los bordes desaparecían porque eran del mismo color.
+
+De esta práctica me llevo sobre todo soltura con `fetch`, `async` y `await`, y con los métodos de arrays como `map`, `filter` y `find`, que al final se usan para casi todo. También aprendí a poner un solo listener en el contenedor en vez de uno por tarjeta, a organizar los datos en una clase y a montar una cuadrícula adaptable con grid. Y a abrir la consola antes de desesperarme, que casi siempre dice en qué línea está el fallo.
+
+Como mejoras futuras me gustaría añadir un interruptor para ver la versión shiny, barras visuales para las estadísticas, guardar favoritos con `localStorage` y poder ordenar la cuadrícula por nombre, peso o altura.
+
 ### **Preguntas respondidas durante el seguimiento de la práctica Mini-Pokedex.**
 
 - **¿Por qué escuchamos el evento submit del formulario?**
@@ -417,4 +516,12 @@ Rellenar con 0 por la izquierda hasta los tres dígitos.
 
 - **¿Qué habría que modificar para mostrar varios Pokémon simultáneamente?**
 
-Se me ocurre editar la búsqueda para que con la misma que se trae un pokemon se los traiga a todos y seguir haciendo una sola llamada a la API. Edit: mirando la API te puedes traer todo con `https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0`
+Se me ocurre editar la búsqueda para que con la misma que se trae un pokemon se los traiga a todos y seguir haciendo una sola llamada a la API. Edit: mirando la API NO te puedes traer todo, al final usé un `Promise.all`
+
+
+## Uso de IA
+Este proyecto se hizo **SIN** el uso de IA, sin embargo cabe destacar que se ha usado como herramienta para investigar, filtrar y resumir documentación, resolver dudas cuando no veía salida a un problema y algunos detalles en CSS que eran mecánicos o réplicas de lo que ya había hecho. (Y para crear el logo).
+
+
+### Reflexión final
+Creo que la IA es una herramienta muy poderosa que uno deberá aprender a usar en este sector si no quiere quedarse atrás. Reduzco su uso al mínimo porque aún me estoy formando pero pienso que el uso que le dí en este trabajo fue el adecuado.
